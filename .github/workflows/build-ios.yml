@@ -4,9 +4,9 @@ on:
     workflow_dispatch:
         inputs:
             version:
-                description: 'Version to build (e.g., v0.6.48)'
+                description: 'Version to build (e.g., v100.100.100)'
                 required: true
-                default: 'v0.6.48'
+                default: 'v100.100.100'
                 type: string
     push:
         tags:
@@ -45,15 +45,17 @@ jobs:
                   echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
                   echo "build_number=${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
 
-            - name: Select Xcode 26
+            - name: Setup Xcode
               run: |
                   set -euo pipefail
-                  XCODE_APP=$(find /Applications -maxdepth 1 -type d -name 'Xcode_26*.app' | sort -V | tail -n 1)
+                  # Use the latest available Xcode on macOS 15
+                  XCODE_APP=$(find /Applications -maxdepth 1 -type d -name 'Xcode*.app' | sort -V | tail -n 1)
                   if [[ -z "${XCODE_APP}" ]]; then
-                    echo "Expected an installed Xcode 26.x on the macOS 15 runner."
+                    echo "No Xcode found in /Applications"
                     ls -1 /Applications | grep Xcode || true
                     exit 1
                   fi
+                  echo "Using Xcode: ${XCODE_APP}"
                   sudo xcode-select -s "${XCODE_APP}/Contents/Developer"
                   xcodebuild -version
                   pod --version
@@ -117,12 +119,12 @@ jobs:
                   cd ios/build/Build/Products/Release-iphoneos
                   mkdir -p Payload
                   cp -r MusicFree.app Payload/
-                  zip -r MusicFree-${{ steps.build-version.outputs.raw }}.ipa Payload
+                  zip -r JLHmusic-${{ steps.build-version.outputs.raw }}.ipa Payload
 
             - name: Upload IPA artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: musicfree-ios-${{ steps.build-version.outputs.raw }}
+                  name: jlh-music-ios-${{ steps.build-version.outputs.raw }}
                   path: ios/build/Build/Products/Release-iphoneos/*.ipa
                   retention-days: 30
 

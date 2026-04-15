@@ -4,9 +4,9 @@ on:
     workflow_dispatch:
         inputs:
             version:
-                description: 'Version to build (e.g., v0.6.48)'
+                description: 'Version to build (e.g., v100.100.100)'
                 required: true
-                default: 'v0.6.48'
+                default: 'v100.100.100'
                 type: string
     push:
         tags:
@@ -122,8 +122,8 @@ jobs:
 
                     // 生成下载链接（使用新的文件名格式）
                     const downloadUrls = [
-                      'https://github.com/${{ github.repository }}/releases/download/' + tagVersion + '/MusicFree-v' + version + '-arm64-v8a-release.apk',
-                      'https://github.com/${{ github.repository }}/releases/download/' + tagVersion + '/MusicFree-v' + version + '-universal-release.apk'
+                      'https://github.com/${{ github.repository }}/releases/download/' + tagVersion + '/JLHmusic-v' + version + '-arm64-v8a-release.apk',
+                      'https://github.com/${{ github.repository }}/releases/download/' + tagVersion + '/JLHmusic-v' + version + '-universal-release.apk'
                     ];
 
                     // 只更新 version 和 download，保留现有的 changeLog
@@ -297,11 +297,11 @@ jobs:
                   # Verify all expected APK files exist
                   MISSING_FILES=()
                   EXPECTED_FILES=(
-                    "MusicFree-v${VERSION}-universal-release.apk"
-                    "MusicFree-v${VERSION}-arm64-v8a-release.apk"
-                    "MusicFree-v${VERSION}-armeabi-v7a-release.apk"
-                    "MusicFree-v${VERSION}-x86_64-release.apk"
-                    "MusicFree-v${VERSION}-x86-release.apk"
+                    "JLHmusic-v${VERSION}-universal-release.apk"
+                    "JLHmusic-v${VERSION}-arm64-v8a-release.apk"
+                    "JLHmusic-v${VERSION}-armeabi-v7a-release.apk"
+                    "JLHmusic-v${VERSION}-x86_64-release.apk"
+                    "JLHmusic-v${VERSION}-x86-release.apk"
                   )
 
                   for file in "${EXPECTED_FILES[@]}"; do
@@ -345,18 +345,18 @@ jobs:
 
                   # 创建完整的 Release 描述
                   cat > release_body.md << EOF
-                  ## 🎵 MusicFree ${{ github.ref_name }}
+                  ## 🎵 JLHmusic ${{ github.ref_name }}
 
                   ### 📱 下载选项
 
                   **推荐下载 (适用于所有设备):**
-                  - **Universal APK**: [MusicFree-v${VERSION}-universal-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/MusicFree-v${VERSION}-universal-release.apk)
+                  - **Universal APK**: [JLHmusic-v${VERSION}-universal-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/JLHmusic-v${VERSION}-universal-release.apk)
 
                   **按设备架构下载 (体积更小):**
-                  - **ARM64 (推荐)**: [MusicFree-v${VERSION}-arm64-v8a-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/MusicFree-v${VERSION}-arm64-v8a-release.apk) - 适用于大部分现代Android设备
-                  - **ARM32**: [MusicFree-v${VERSION}-armeabi-v7a-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/MusicFree-v${VERSION}-armeabi-v7a-release.apk) - 适用于老版本Android设备
-                  - **x86_64**: [MusicFree-v${VERSION}-x86_64-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/MusicFree-v${VERSION}-x86_64-release.apk) - 适用于x86_64模拟器
-                  - **x86**: [MusicFree-v${VERSION}-x86-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/MusicFree-v${VERSION}-x86-release.apk) - 适用于x86模拟器
+                  - **ARM64 (推荐)**: [JLHmusic-v${VERSION}-arm64-v8a-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/JLHmusic-v${VERSION}-arm64-v8a-release.apk) - 适用于大部分现代Android设备
+                  - **ARM32**: [JLHmusic-v${VERSION}-armeabi-v7a-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/JLHmusic-v${VERSION}-armeabi-v7a-release.apk) - 适用于老版本Android设备
+                  - **x86_64**: [JLHmusic-v${VERSION}-x86_64-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/JLHmusic-v${VERSION}-x86_64-release.apk) - 适用于x86_64模拟器
+                  - **x86**: [JLHmusic-v${VERSION}-x86-release.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/JLHmusic-v${VERSION}-x86-release.apk) - 适用于x86模拟器
 
                   ### 🔄 更新内容
 
@@ -378,12 +378,12 @@ jobs:
                   TZ: Asia/Shanghai
               with:
                   tag_name: ${{ github.ref_name }}
-                  name: MusicFree ${{ github.ref_name }}
+                  name: JLHmusic ${{ github.ref_name }}
                   body_path: release_body.md
                   draft: false
                   prerelease: false
                   files: |
-                      android/app/build/outputs/apk/release/MusicFree-*.apk
+                      android/app/build/outputs/apk/release/JLHmusic-*.apk
 
             # 📤 提交更新的版本文件回到仓库
             - name: Commit updated version files
